@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/staff")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:3000", "https://your-frontend-domain.onrender.com"})
 public class StaffAuthController {
 
     @Autowired
