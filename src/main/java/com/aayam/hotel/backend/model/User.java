@@ -19,14 +19,19 @@ public class User {
 
     private String name;
 
-    @Indexed(unique = true) // Isse duplicate accounts prevent honge
+    @Indexed(unique = true)
     private String email;
 
     private String password;
 
-    private String phone;
+    private String phone; // Mobile No
 
-    private String role = "USER"; // Default status USER rahega
+    // Nayi fields add ki hain:
+    private String dob;
+    private String address;
+    private String pinCode; // Number store karega
+    private String identityNo; // PAN/Aadhar
 
+    private String role = "MEMBER";
     private LocalDateTime createdAt = LocalDateTime.now();
 }

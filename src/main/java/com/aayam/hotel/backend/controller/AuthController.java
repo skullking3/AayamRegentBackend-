@@ -11,11 +11,16 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "https://tumhara-frontend-ka-url.onrender.com")// Tumhare Vite React frontend ke liye access permit
 public class AuthController {
 
     @Autowired
     private UserRepository userRepository;
+
+    // ─── GET ALL MEMBERS ───
+    @GetMapping("/all")
+    public ResponseEntity<java.util.List<User>> getAllMembers() {
+        return ResponseEntity.ok(userRepository.findAll());
+    }
 
     // ─── USER REGISTRATION ───
     @PostMapping("/register")
@@ -24,7 +29,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Error: Email is already registered!");
         }
-        user.setRole("USER");
+        user.setRole("MEMBER");
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
     }
@@ -45,5 +50,24 @@ public class AuthController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body("Error: User not found!");
+    }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<User> updateMember(@PathVariable String id, @RequestBody User userDetails) {
+        return userRepository.findById(id).map(user -> {
+            user.setName(userDetails.getName());
+            user.setAddress(userDetails.getAddress());
+            user.setPhone(userDetails.getPhone());
+            // Baki fields bhi update kar do
+            return ResponseEntity.ok(userRepository.save(user));
+        }).orElse(ResponseEntity.notFound().build());
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteMember(@PathVariable String id) {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            return ResponseEntity.ok("Member with ID " + id + " deleted successfully!");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Member not found!");
+        }
     }
 }
