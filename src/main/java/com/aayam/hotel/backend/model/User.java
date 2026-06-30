@@ -34,4 +34,5 @@ public class User {
 
     private String role = "MEMBER";
     private LocalDateTime createdAt = LocalDateTime.now();
+    private String agreementUrl;
 }

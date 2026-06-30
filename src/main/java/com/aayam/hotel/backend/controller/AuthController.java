@@ -16,13 +16,13 @@ public class AuthController {
     @Autowired
     private UserRepository userRepository;
 
-    // ─── GET ALL MEMBERS ───
+
     @GetMapping("/all")
     public ResponseEntity<java.util.List<User>> getAllMembers() {
         return ResponseEntity.ok(userRepository.findAll());
     }
 
-    // ─── USER REGISTRATION ───
+
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
@@ -34,7 +34,7 @@ public class AuthController {
         return ResponseEntity.ok(savedUser);
     }
 
-    // ─── USER LOGIN ───
+
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody User loginDetails) {
         Optional<User> userOpt = userRepository.findByEmail(loginDetails.getEmail());
@@ -57,7 +57,11 @@ public class AuthController {
             user.setName(userDetails.getName());
             user.setAddress(userDetails.getAddress());
             user.setPhone(userDetails.getPhone());
-            // Baki fields bhi update kar do
+            user.setEmail(userDetails.getEmail());
+            user.setAgreementUrl(userDetails.getAgreementUrl());
+            user.setDob(userDetails.getDob());
+            user.setIdentityNo(userDetails.getIdentityNo());
+            user.setPinCode(userDetails.getPinCode());
             return ResponseEntity.ok(userRepository.save(user));
         }).orElse(ResponseEntity.notFound().build());
     }
